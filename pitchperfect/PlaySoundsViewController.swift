@@ -13,18 +13,25 @@ class PlaySoundsViewController: UIViewController {
     var audioPlayer: AVAudioPlayer!
     var audioURL : NSURL!
     var receivedAudio : RecordedAudio!
+    var audioEngine : AVAudioEngine!
+    var audioFile : AVAudioFile!
+    var pitchPlayer : AVAudioPlayerNode!
+    var timePitch : AVAudioUnitTimePitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        audioEngine = AVAudioEngine()
+
         if let audioPath = NSBundle.mainBundle().pathForResource("movie_quote",ofType:"mp3") {
             
             let audioURL  = receivedAudio == nil ? NSURL.fileURLWithPath( audioPath) : receivedAudio.filePathUrl
             do {
                 audioPlayer = try AVAudioPlayer( contentsOfURL: audioURL)
                 audioPlayer.volume = 1
-                audioPlayer.enableRate=true
-               
-
+                audioPlayer.enableRate  = true
+                audioFile = try? AVAudioFile(forReading: audioURL)
+                
+                
             }
             catch {
                 print("Ops! Audio Player fails to initialise.")
@@ -41,18 +48,24 @@ class PlaySoundsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
   
+    @IBAction func playDarthVaderSound(sender: AnyObject) {
+        playVariablePitchSound(-1000)
+        
+        print("play Darth Vader sound")
+    }
     @IBAction func playFastSound(sender: AnyObject) {
+        audioPlayer.currentTime = 0
         audioPlayer.rate = 2
         audioPlayer.stop()
         if( audioPlayer.play()) {
-            print("Success: Play Slow Sound. Volume: \(audioPlayer.volume). ")
+            print("Success: Play Fast Sound. Volume: \(audioPlayer.volume). ")
         }else{
-            print("Failure: Play Slow Sound")
+            print("Failure: Play Fast Sound")
         }
         
     }
     @IBAction func playSlowSound(sender: AnyObject) {
-        //TODO: play slow sound
+        audioPlayer.currentTime = 0
         audioPlayer.rate = 0.5
         audioPlayer.stop()
         if( audioPlayer.play()) {
@@ -64,8 +77,50 @@ class PlaySoundsViewController: UIViewController {
         
         
     }
+    func playVariablePitchSound(pitch : Float){
+        audioPlayer.stop()
+        audioEngine.stop()
+        audioEngine.reset()
+        
+        if  audioFile != nil {
+            pitchPlayer = AVAudioPlayerNode()
+            timePitch = AVAudioUnitTimePitch()
+            
+            timePitch.pitch = pitch
+            
+            audioEngine.attachNode(pitchPlayer)
+            audioEngine.attachNode(timePitch)
+            
+            audioEngine.connect(pitchPlayer, to: timePitch, format: audioFile.processingFormat)
+            audioEngine.connect(timePitch, to: audioEngine.outputNode, format: audioFile.processingFormat)
+            
+            pitchPlayer.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+            
+            if  ((try? audioEngine.start()) != nil)  {
+                
+                pitchPlayer.play()
+                
+            }else {
+                
+                print("Audio Engine can't start!")
+            }
+            
+        }else{
+            
+            print("Audio File not found!")
+            
+        }
+        
+        print("play chipmunk sound")
+        
+    }
+    @IBAction func playChipMunkSound(sender: UIButton) {
+        playVariablePitchSound(1000)
+    
+    }
     @IBAction func stopPlayback(sender: AnyObject) {
         audioPlayer.stop()
+        audioEngine.stop()
        
     }
     /*

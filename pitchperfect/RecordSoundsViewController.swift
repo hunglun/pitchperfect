@@ -39,7 +39,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     }
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
         if flag {
-            var recordedAudio  = RecordedAudio()
+            let recordedAudio  = RecordedAudio()
             recordedAudio.title = recorder.url.lastPathComponent
             recordedAudio.filePathUrl = recorder.url
             self.performSegueWithIdentifier("stopRecording", sender: recordedAudio)
