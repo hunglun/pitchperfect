@@ -36,7 +36,6 @@
                                 <state key="normal" image="stopRecording"/>
                                 <connections>
                                     <action selector="stopRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zZe-W3-zsh"/>
-                                    <segue destination="h9U-e6-djR" kind="show" id="KFG-hB-O3t"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -55,6 +54,7 @@
                         <outlet property="recordButton" destination="syt-C1-sQW" id="7Ob-rs-YrS"/>
                         <outlet property="recordingInProgressLabel" destination="hwU-hs-L1o" id="zek-8J-cha"/>
                         <outlet property="stopRecordingButton" destination="yrT-3l-YDu" id="Fod-X7-Tei"/>
+                        <segue destination="h9U-e6-djR" kind="show" identifier="stopRecording" id="y6O-pq-nHa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -134,9 +134,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="fastSound" width="100" height="100"/>
+        <image name="fastSound" width="200" height="200"/>
         <image name="microphone" width="100" height="100"/>
-        <image name="snailSound" width="100" height="100"/>
+        <image name="snailSound" width="200" height="200"/>
         <image name="stopPlayback" width="50" height="50"/>
         <image name="stopRecording" width="100" height="100"/>
     </resources>

@@ -8,16 +8,17 @@
 
 import UIKit
 import AVFoundation.AVAudioPlayer
-
 class PlaySoundsViewController: UIViewController {
 
     var audioPlayer: AVAudioPlayer!
+    var audioURL : NSURL!
+    var receivedAudio : RecordedAudio!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         if let audioPath = NSBundle.mainBundle().pathForResource("movie_quote",ofType:"mp3") {
             
-            let audioURL  = NSURL.fileURLWithPath( audioPath)
+            let audioURL  = receivedAudio == nil ? NSURL.fileURLWithPath( audioPath) : receivedAudio.filePathUrl
             do {
                 audioPlayer = try AVAudioPlayer( contentsOfURL: audioURL)
                 audioPlayer.volume = 1
@@ -39,8 +40,7 @@ class PlaySoundsViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
+  
     @IBAction func playFastSound(sender: AnyObject) {
         audioPlayer.rate = 2
         audioPlayer.stop()

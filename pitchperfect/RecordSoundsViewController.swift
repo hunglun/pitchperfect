@@ -7,8 +7,13 @@
 //
 
 import UIKit
+import AVFoundation
 
-class RecordSoundsViewController: UIViewController {
+//Declared Globally
+var audioRecorder:AVAudioRecorder!
+
+
+class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
  
    
     @IBOutlet weak var recordingInProgressLabel: UILabel!
@@ -20,6 +25,7 @@ class RecordSoundsViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view, typically from a nib.
+
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -31,15 +37,57 @@ class RecordSoundsViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
+        if flag {
+            var recordedAudio  = RecordedAudio()
+            recordedAudio.title = recorder.url.lastPathComponent
+            recordedAudio.filePathUrl = recorder.url
+            self.performSegueWithIdentifier("stopRecording", sender: recordedAudio)
+        }
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "stopRecording" {
+            if let  playSoundsVC: PlaySoundsViewController = segue.destinationViewController as? PlaySoundsViewController{
+                if  let data = sender as? RecordedAudio{
+                    playSoundsVC.receivedAudio = data
+                }else{
+                    print("sender is not recorded audio!")
+                }
+            }else{
+                print("segue destination view controller is not PlaySoundsViewController!")
+            }
+        }
+    }
 
-  
     @IBAction func recordAudio(sender: AnyObject) {
         
         stopRecordingButton.hidden = false
         recordingInProgressLabel.hidden = false
         recordButton.enabled = false
-        //TODO: record audio
-     
+        
+        //Inside func recordAudio(sender: UIButton)
+        let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        
+/*      let currentDateTime = NSDate()
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "ddMMyyyy-HHmmss"
+        let recordingName = formatter.stringFromDate(currentDateTime)+".wav"
+  */
+        let recordingName = "pitchperfect.wav"
+        let pathArray = [dirPath, recordingName]
+        let filePath = NSURL.fileURLWithPathComponents(pathArray)
+        print(filePath)
+        //        lastRecordedFilePath = filePath
+        let session = AVAudioSession.sharedInstance()
+        try! session.setCategory(AVAudioSessionCategoryPlayAndRecord)
+        
+        try! audioRecorder = AVAudioRecorder(URL: filePath!, settings: [:])
+        audioRecorder.delegate = self
+        audioRecorder.meteringEnabled = true
+        audioRecorder.prepareToRecord()
+        audioRecorder.record()
+        
+        
     
     }
     
@@ -47,6 +95,10 @@ class RecordSoundsViewController: UIViewController {
         recordingInProgressLabel.hidden = true
         recordButton.enabled = true
         //TODO: stop recording
+        //Inside func stopAudio(sender: UIButton)
+        audioRecorder.stop()
+        let audioSession = AVAudioSession.sharedInstance()
+        try! audioSession.setActive(false)
         
     }
   
