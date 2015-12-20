@@ -21,25 +21,18 @@ class PlaySoundsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         audioEngine = AVAudioEngine()
-
-        if let audioPath = NSBundle.mainBundle().pathForResource("movie_quote",ofType:"mp3") {
-            
-            let audioURL  = receivedAudio == nil ? NSURL.fileURLWithPath( audioPath) : receivedAudio.filePathUrl
-            do {
-                audioPlayer = try AVAudioPlayer( contentsOfURL: audioURL)
-                audioPlayer.volume = 1
-                audioPlayer.enableRate  = true
-                audioFile = try? AVAudioFile(forReading: audioURL)
-                
-                
-            }
-            catch {
-                print("Ops! Audio Player fails to initialise.")
-            }
-        }else{
-            print("Audio file can't be found")
+        
+        let audioURL  = receivedAudio.filePathUrl
+        do {
+            audioPlayer = try AVAudioPlayer( contentsOfURL: audioURL)
+            audioPlayer.enableRate  = true
+            audioFile = try? AVAudioFile(forReading: audioURL)
         }
-
+        catch {
+            print("Ops! Audio Player fails to initialise.")
+        }
+    
+        
         // Do any additional setup after loading the view.
     }
 
@@ -50,33 +43,32 @@ class PlaySoundsViewController: UIViewController {
   
     @IBAction func playDarthVaderSound(sender: AnyObject) {
         playVariablePitchSound(-1000)
+    }
+    
+    func playVariableSpeedSound(rate: Float){
+        audioPlayer.stop()
+        audioEngine.stop()
+        audioEngine.reset()
         
-        print("play Darth Vader sound")
+        audioPlayer.stop()
+        audioPlayer.currentTime = 0
+        audioPlayer.rate = rate
+
+        if( audioPlayer.play()) {
+            print("Success: Play Sound. Volume: \(audioPlayer.volume). ")
+        }else{
+            print("Failure: Play Sound")
+        }
+        
+    
     }
     @IBAction func playFastSound(sender: AnyObject) {
-        audioPlayer.currentTime = 0
-        audioPlayer.rate = 2
-        audioPlayer.stop()
-        if( audioPlayer.play()) {
-            print("Success: Play Fast Sound. Volume: \(audioPlayer.volume). ")
-        }else{
-            print("Failure: Play Fast Sound")
-        }
-        
+        playVariableSpeedSound(2)
     }
     @IBAction func playSlowSound(sender: AnyObject) {
-        audioPlayer.currentTime = 0
-        audioPlayer.rate = 0.5
-        audioPlayer.stop()
-        if( audioPlayer.play()) {
-            print("Success: Play Slow Sound. Volume: \(audioPlayer.volume). ")
-        }else{
-            print("Failure: Play Slow Sound")
-        }
-
-        
-        
+        playVariableSpeedSound(0.5)
     }
+
     func playVariablePitchSound(pitch : Float){
         audioPlayer.stop()
         audioEngine.stop()

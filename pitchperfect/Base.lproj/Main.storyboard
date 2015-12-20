@@ -25,14 +25,14 @@
                                     <action selector="recordAudio:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vwg-1X-maI"/>
                                 </connections>
                             </button>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recording in progress" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hwU-hs-L1o">
-                                <rect key="frame" x="216" y="409" width="168" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to record" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hwU-hs-L1o">
+                                <rect key="frame" x="249" y="355" width="103" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yrT-3l-YDu">
-                                <rect key="frame" x="250" y="471" width="100" height="100"/>
+                                <rect key="frame" x="250" y="417" width="100" height="100"/>
                                 <state key="normal" image="stopRecording"/>
                                 <connections>
                                     <action selector="stopRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zZe-W3-zsh"/>
@@ -43,7 +43,7 @@
                         <constraints>
                             <constraint firstItem="hwU-hs-L1o" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BIV-vo-hco"/>
                             <constraint firstItem="yrT-3l-YDu" firstAttribute="top" secondItem="hwU-hs-L1o" secondAttribute="bottom" constant="41" id="ICg-ji-jvU"/>
-                            <constraint firstItem="hwU-hs-L1o" firstAttribute="top" secondItem="syt-C1-sQW" secondAttribute="bottom" constant="59" id="Ono-n1-vtv"/>
+                            <constraint firstItem="hwU-hs-L1o" firstAttribute="top" secondItem="syt-C1-sQW" secondAttribute="bottom" constant="5" id="Ono-n1-vtv"/>
                             <constraint firstItem="syt-C1-sQW" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Qrx-YZ-abb"/>
                             <constraint firstItem="syt-C1-sQW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="oTw-6E-PQB"/>
                             <constraint firstItem="yrT-3l-YDu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="q11-yA-adc"/>
